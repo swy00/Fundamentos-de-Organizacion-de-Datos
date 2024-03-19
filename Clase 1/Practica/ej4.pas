@@ -156,7 +156,7 @@ begin
 	if (not(existe)) then
 	begin
 		reset(a);
-		seek(a, (FileSize(a)-1)); {PARA MOVERME AL FINAL DEL ARCHIVO}
+		seek(a, (FileSize(a))); {PARA MOVERME AL FINAL DEL ARCHIVO}
 		write('Apellido: ');
 		readln(e.apellido);
 		write('Nombre: ');
@@ -166,11 +166,11 @@ begin
 		e.nro:=num;
 		write(a,e);
 		writeln('>Empleado agregado correctamente.');
+		close(a);
 	end
 	else begin
 		writeln('>El Numero de Empleado ya existe');
 	end;
-	close(a);
 end;
 
 procedure modificarEdad(var a:archivo);
