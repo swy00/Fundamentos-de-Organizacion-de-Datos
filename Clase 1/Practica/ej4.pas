@@ -155,7 +155,7 @@ begin
 	
 	if (not(existe)) then
 	begin
-		//rewrite(a);
+		reset(a);
 		seek(a, (FileSize(a)-1)); {PARA MOVERME AL FINAL DEL ARCHIVO}
 		write('Apellido: ');
 		readln(e.apellido);
