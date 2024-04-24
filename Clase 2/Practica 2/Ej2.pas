@@ -1,8 +1,4 @@
-program pr2ej2;
-
-const
-	EJ_PREFIJO = 'pr2ej2_';
-	VALOR_ALTO = 9999;
+program Ej2;
 
 type
 	alumno = record 
@@ -12,22 +8,20 @@ type
 		end;
 	info_detalle = record
 		codigo: integer;
-		aprobo: boolean; //FALSE indica que aprobó una cursada sin final, TRUE lo otro
+		aprobo: boolean; //FALSE aprobó una cursada sin final, TRUE con
 		end;
 	arch_alu = file of alumno;
 	arch_det = file of info_detalle;
 
-// Variables globales
 var
 	userInput: string;
 
-// Procedimientos
 procedure Leer(var arch: arch_det; var infodet: info_detalle);
 	begin
 		if not eof(arch) then
 			read(arch, infodet)
 		else
-			infodet.codigo:= VALOR_ALTO;
+			infodet.codigo:= 999;
 	end;
 
 procedure ResetPos(var arch: arch_alu);
@@ -46,13 +40,13 @@ procedure Actualizar(var maestro: arch_alu);
 		writeln;
 		writeln(' -- ACTUALIZAR ARCHIVO MAESTRO -- ');
 		write(' -- nombre del archivo detalle: '); read(userInput); writeln(' -- ');
-		assign(det, EJ_PREFIJO + userInput);
+		assign(det, 'ej2' + userInput);
 		reset(det);
 		ResetPos(maestro); //Resetear posición del maestro por si es diferente de 0
 		Leer(det, info_det);
 		read(maestro, alu_aux);
 		//Recorrer archivo detalle y maestro
-		while (info_det.codigo <> VALOR_ALTO) do begin
+		while (info_det.codigo <> 999) do begin
 			//Averiguar cuantas materias aprobó solo la cursada o el final también
 			cod_aux:= info_det.codigo;
 			sf_aux:= 0;
@@ -92,7 +86,7 @@ procedure Exportar(var maestro: arch_alu);
 		writeln;
 		writeln(' -- EXPORTAR A TEXTO -- ');
 		write(' -- nombre para exportar: '); readln(userInput);
-		assign(texto, EJ_PREFIJO + userInput + '.txt');
+		assign(texto, 'ej2' + userInput + '.txt');
 		rewrite(texto);
 		ResetPos(maestro); //Resetear posición del maestro por si es diferente de 0
 		read(maestro, alu_aux);
@@ -106,25 +100,24 @@ procedure Exportar(var maestro: arch_alu);
 
 // Programa principal
 var
-	mae: arch_alu;
+	arc_mae: arch_alu;
 begin
 	//Abrir archivos
 	writeln;
-	writeln(' -- GESTOR DE BASE DE DATOS DE LA FACULTAD DE INFORMATICA -- ');
 	write(' -- nombre del archivo maestro: '); read(userInput); writeln(' -- ');
-	assign(mae, EJ_PREFIJO + userInput);
-	reset(mae);
+	assign(arc_mae, 'ej2' + userInput);
+	reset(arc_mae);
 	writeln(' -- archivo abierto -- ');
 	writeln;
-	//Menú
+	
 	while (userInput <> 'TERMINAR') do begin
 		writeln(' -- MENU (opciones: ACTUALIZAR, EXPORTAR, TERMINAR) -- ');
-		write(' -- usted desea: '); readln(userInput);
+		write(' -- OPCION: '); readln(userInput);
 		case userInput of
-			'ACTUALIZAR': Actualizar(mae);
-			'EXPORTAR': Exportar(mae);
+			'ACTUALIZAR': Actualizar(arc_mae);
+			'EXPORTAR': Exportar(arc_mae);
 		end;
 		writeln;
 	end;
-	close(mae);
+	close(arc_mae);
 end.
